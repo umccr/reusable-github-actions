@@ -1,10 +1,10 @@
 on:
-  workflow_call:                                                                                      |
-    inputs:                                                                                           |
-      rust-version:                                                                                   |runs-on: ${{ matrix.os }}
-        type: string                                                                                  |    strategy:
-        required: false                                                                               |      matrix:
-        default: nightly                                                                              |        rust: [stable]
+  workflow_call:
+    inputs:
+      rust-version:
+        type: string
+        required: false
+        default: nightly
 jobs:
   test:
     runs-on: ${{ matrix.os }}
