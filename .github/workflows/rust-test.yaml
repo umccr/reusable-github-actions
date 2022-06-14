@@ -7,11 +7,7 @@ on:
         default: nightly
 jobs:
   test:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        rust: [stable]
-        os: [ubuntu-latest]
+    runs-on: ubuntu-latest
     steps:
       - name: Cargo test w/ all features
         uses: actions-rs/cargo@v1

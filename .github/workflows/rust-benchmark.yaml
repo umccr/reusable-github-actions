@@ -8,11 +8,7 @@ on:
 
 jobs:
   benchmark:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        rust: [stable]
-        os: [ubuntu-latest]
+    runs-on: ubuntu-latest
     steps:
       - name: Run benchmarks
         run: cargo bench --bench search-benchmarks --bench request-benchmarks -- LIGHT --output-format bencher | tee output.txt
