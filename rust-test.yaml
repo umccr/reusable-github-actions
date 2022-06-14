@@ -1,0 +1,28 @@
+on:
+  workflow_call:                                                                                      |
+    inputs:                                                                                           |
+      rust-version:                                                                                   |runs-on: ${{ matrix.os }}
+        type: string                                                                                  |    strategy:
+        required: false                                                                               |      matrix:
+        default: nightly                                                                              |        rust: [stable]
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        rust: [stable]
+        os: [ubuntu-latest]
+    steps:
+      - name: Cargo test w/ all features
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --all-features
+      - name: Cargo test w/ no default features
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --no-default-features
+      # Specific feature checks should go into the user's
+      # crate, not here.
+

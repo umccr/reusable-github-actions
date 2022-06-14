@@ -1,0 +1,30 @@
+on:
+  workflow_call:                                                                                      |
+    inputs:                                                                                           |
+      rust-version:                                                                                   |runs-on: ${{ matrix.os }}
+        type: string                                                                                  |    strategy:
+        required: false                                                                               |      matrix:
+        default: nightly                                                                              |        rust: [stable]
+jobs:
+  benchmark:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        rust: [stable]
+        os: [ubuntu-latest]
+    steps:
+      - name: Run benchmarks
+        run: cargo bench --bench search-benchmarks --bench request-benchmarks -- LIGHT --output-format bencher | tee output.txt
+      - name: Download previous benchmark data
+        uses: actions/cache@v3
+        with:
+          path: ./cache
+          key: ${{ runner.os }}-benchmark
+      - name: Store benchmark result
+        uses: benchmark-action/github-action-benchmark@v1
+        with:
+          tool: 'cargo'
+          output-file-path: output.txt
+          external-data-json-path: ./cache/benchmark-data.json
+          fail-on-alert: false
+
