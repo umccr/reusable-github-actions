@@ -44,12 +44,7 @@ jobs:
       - name: Install
         uses: baptiste0928/cargo-install@v1
         with:
-          crate:
-            - cargo-deny
-            - cargo-outdated
-            - cargo-udeps
-            - cargo-audit
-            - cargo-pants
+          crate: cargo-deny cargo-outdated cargo-udeps cargo-audit cargo-pants
       - name: Check
         run: |
           #cargo deny check
