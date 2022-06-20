@@ -30,17 +30,22 @@ jobs:
             ~/.cargo/git/db/
             target/
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.toml') }}
-      - name: Lint
-        run: |
-          cargo fmt --all -- --check
-          cargo clippy -- -D warnings
-      - name: Install cargo check tools
-        run: |
-          cargo install cargo-deny
-          cargo install cargo-outdated
-          cargo install cargo-udeps
-          cargo install cargo-audit
-          cargo install cargo-pants
+
+      - name: Format
+        uses: actions-rs/cargo@v1
+          with:
+            command: fmt
+            args: --all -- --check
+      - name: Clippy
+        uses: actions-rs/cargo@v1
+          with:
+            command: clippy
+            args: -- -D warnings
+      - name: Install
+        uses: actions-rs/cargo@v1
+          with:
+            command: install
+            args: cargo-deny cargo-outdated cargo-udeps cargo-audit cargo-pants
       - name: Check
         run: |
           #cargo deny check
