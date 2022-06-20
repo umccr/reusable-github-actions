@@ -1,0 +1,21 @@
+on:
+  workflow_call:
+    inputs:
+      rust-version:
+        type: string
+        required: false
+        default: nightly
+
+jobs:
+  release:
+    if: github.repository_owner == 'umccr'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: GoogleCloudPlatform/release-please-action@v3
+        id: release_main
+        with:
+          release-type: rust
+          package-name: ${{ github.repository }} # TODO: See if it refers to the correct one?
+          bump-minor-pre-major: true
+          monorepo-tags: true
+          path: "."
