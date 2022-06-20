@@ -42,10 +42,14 @@ jobs:
           command: clippy
           args: -- -D warnings
       - name: Install
-        uses: actions-rs/cargo@v1
+        uses: baptiste0928/cargo-install@v1
         with:
-          command: install
-          args: --force cargo-deny cargo-outdated cargo-udeps cargo-audit cargo-pants
+          crate:
+            - cargo-deny
+            - cargo-outdated
+            - cargo-udeps
+            - cargo-audit
+            - cargo-pants
       - name: Check
         run: |
           #cargo deny check
