@@ -19,6 +19,10 @@ jobs:
           toolchain: ${{ inputs.rust-version }}
           override: true
           components: rustfmt, clippy
+      - name: Install cargo-criterion
+        uses: baptiste0928/cargo-install@v1
+        with:
+          crate: cargo-criterion
       - name: Set up cargo cache
         uses: actions/cache@v3
         continue-on-error: false
