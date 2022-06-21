@@ -30,18 +30,32 @@ jobs:
             ~/.cargo/git/db/
             target/
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.toml') }}
-      - name: Run benchmarks
-        run: cargo bench --bench search-benchmarks --bench request-benchmarks -- LIGHT --output-format bencher | tee output.txt
+      # JSON on stdout, bencher results on stderr
+      - name: Timestamp
+        run: export BENCH_TIMESTAMP=$(date +'%Y-%m-%d-%s')
+      - name: Run requests benchmarks
+        run: cargo criterion --bench request-benchmarks --message-format=json -- LIGHT 1> requests-benchmarks-${BENCH_TIMESTAMP}.json
+      - name: Run search benchmarks
+        run: cargo criterion --bench search-benchmarks --message-format=json -- LIGHT 1> search-benchmarks-${BENCH_TIMESTAMP}.json
       - name: Download previous benchmark data
         uses: actions/cache@v3
         with:
           path: ./cache
           key: ${{ runner.os }}-benchmark
-      - name: Store benchmark result
+      - name: Store requests benchmark result
         uses: benchmark-action/github-action-benchmark@v1
         with:
           tool: 'cargo'
-          output-file-path: output.txt
-          external-data-json-path: ./cache/benchmark-data.json
+          output-file-path: requests-benchmarks.json
+          external-data-json-path: ./cache/requests-benchmarks-${BENCH_TIMESTAMP}.json
           fail-on-alert: false
+            - name: Store requests benchmark result
+      - name: Store search benchmark result
+        uses: benchmark-action/github-action-benchmark@v1
+        with:
+          tool: 'cargo'
+          output-file-path: search-benchmarks.json
+          external-data-json-path: ./cache/search-benchmarks-${BENCH_TIMESTAMP}.json
+          fail-on-alert: false
+
 
