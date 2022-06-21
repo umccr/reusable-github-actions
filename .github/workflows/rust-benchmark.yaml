@@ -49,7 +49,6 @@ jobs:
           output-file-path: requests-benchmarks.json
           external-data-json-path: ./cache/requests-benchmarks-${BENCH_TIMESTAMP}.json
           fail-on-alert: false
-            - name: Store requests benchmark result
       - name: Store search benchmark result
         uses: benchmark-action/github-action-benchmark@v1
         with:
