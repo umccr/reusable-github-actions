@@ -54,7 +54,7 @@ jobs:
           tool: 'cargo'
           # Where the output from the benchmark tool is stored
           #output-file-path: requests-benchmarks-${BENCH_TIMESTAMP}.json
-          output-file-path: requests-benchmarks.json
+          output-file-path: ${{ github.repository }}/requests-benchmarks.json
           # Where the previous data file is stored
           #external-data-json-path: ./cache/requests-benchmarks-${BENCH_TIMESTAMP}.json
           external-data-json-path: ./cache/requests-benchmarks.json
@@ -63,7 +63,7 @@ jobs:
         uses: benchmark-action/github-action-benchmark@v1
         with:
           tool: 'cargo'
-          output-file-path: search-benchmarks.json
+          output-file-path: ${{ github.repository }}/search-benchmarks.json
           #output-file-path: search-benchmarks-${BENCH_TIMESTAMP}.json
           external-data-json-path: ./cache/search-benchmarks.json
           #external-data-json-path: ./cache/search-benchmarks-${BENCH_TIMESTAMP}.json
