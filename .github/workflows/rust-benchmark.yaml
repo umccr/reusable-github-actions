@@ -34,13 +34,15 @@ jobs:
             ~/.cargo/git/db/
             target/
           key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.toml') }}
-      # JSON on stdout, bencher results on stderr
+      # JSON on stdout, bencher (human readable) results on stderr
       - name: Timestamp
         run: export BENCH_TIMESTAMP=$(date +'%Y-%m-%d-%s')
       - name: Run requests benchmarks
-        run: cargo criterion --bench request-benchmarks --message-format=json -- LIGHT 1> requests-benchmarks-${BENCH_TIMESTAMP}.json
+        #run: cargo criterion --bench request-benchmarks --message-format=json -- LIGHT 1> requests-benchmarks-${BENCH_TIMESTAMP}.json
+        run: cargo criterion --bench request-benchmarks --message-format=json -- LIGHT 1> requests-benchmarks.json
       - name: Run search benchmarks
-        run: cargo criterion --bench search-benchmarks --message-format=json -- LIGHT 1> search-benchmarks-${BENCH_TIMESTAMP}.json
+        #run: cargo criterion --bench search-benchmarks --message-format=json -- LIGHT 1> search-benchmarks-${BENCH_TIMESTAMP}.json
+        run: cargo criterion --bench search-benchmarks --message-format=json -- LIGHT 1> search-benchmarks.json
       - name: Download previous benchmark data
         uses: actions/cache@v3
         with:
@@ -50,15 +52,21 @@ jobs:
         uses: benchmark-action/github-action-benchmark@v1
         with:
           tool: 'cargo'
+          # Where the output from the benchmark tool is stored
+          #output-file-path: requests-benchmarks-${BENCH_TIMESTAMP}.json
           output-file-path: requests-benchmarks.json
-          external-data-json-path: ./cache/requests-benchmarks-${BENCH_TIMESTAMP}.json
+          # Where the previous data file is stored
+          #external-data-json-path: ./cache/requests-benchmarks-${BENCH_TIMESTAMP}.json
+          external-data-json-path: ./cache/requests-benchmarks.json
           fail-on-alert: false
       - name: Store search benchmark result
         uses: benchmark-action/github-action-benchmark@v1
         with:
           tool: 'cargo'
           output-file-path: search-benchmarks.json
-          external-data-json-path: ./cache/search-benchmarks-${BENCH_TIMESTAMP}.json
+          #output-file-path: search-benchmarks-${BENCH_TIMESTAMP}.json
+          external-data-json-path: ./cache/search-benchmarks.json
+          #external-data-json-path: ./cache/search-benchmarks-${BENCH_TIMESTAMP}.json
           fail-on-alert: false
 
 
