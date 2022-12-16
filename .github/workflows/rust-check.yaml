@@ -11,8 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out
-        uses: actions/checkout@v3
-        ref: ${{ GITHUB_REF##*/ }}
+        uses: actions/checkout@v3.2.0
       - name: Install Rust
         uses: actions-rs/toolchain@v1
         with:
